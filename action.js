@@ -27,6 +27,7 @@ const main = async () => {
     target_commitish: github.context.sha,
     name,
     body,
+    draft: false,
     prerelease: prerelease
   });
 
