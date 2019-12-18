@@ -4,9 +4,9 @@ require("child_process").execSync("npm install @actions/core @actions/github", {
 const fs = require("fs");
 const core = require("@actions/core");
 const github = require("@actions/github");
+const api = new github.GitHub(core.getInput("token"));
 
 const main = async () => {
-  const api = new github.GitHub(core.getInput("token"));
   const name = core.getInput("name");
   const code = core.getInput("code");
   const body = core.getInput("body");
