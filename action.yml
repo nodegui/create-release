@@ -1,7 +1,7 @@
-name: majkrzak/create-release
+name: nodegui/create-release
 description: |
   Github Action for handling release creation
-author: Piotr Majkrzak
+author: Atul and Piotr Majkrzak
 branding:
   icon: box
   color: green
