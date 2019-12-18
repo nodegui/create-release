@@ -18,7 +18,7 @@ const main = async () => {
     .map(asset => asset.split(":"));
 
   if (recreate) {
-    deleteReleaseIfExists(code);
+    await deleteReleaseIfExists(code);
   }
 
   const release = await api.repos.createRelease({
@@ -52,6 +52,7 @@ async function deleteReleaseIfExists(code) {
       tag: code
     });
   } catch (err) {
+    console.log(err);
     console.log("Release not found.. moving to creation");
   }
   if (!release) {
