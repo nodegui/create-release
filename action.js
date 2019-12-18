@@ -78,6 +78,7 @@ async function retryOnFail(asyncFunction, maxTries = 3) {
     throw `Retried ${maxTries}.. failed always. aborting`;
   }
   try {
+    await delay(1000);
     return await asyncFunction();
   } catch (err) {
     console.log(err);
@@ -86,7 +87,13 @@ async function retryOnFail(asyncFunction, maxTries = 3) {
   }
 }
 
-main().catch(err => {
+async function delay(ms) {
+  await new Promise(resolve => {
+    setTimeout(resolve, ms);
+  });
+}
+
+main().catch(error => {
   console.error(error);
   core.setFailed(error.message);
 });
