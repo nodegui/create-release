@@ -1,6 +1,9 @@
-require("child_process").execSync("npm install @actions/core @actions/github", {
-  cwd: __dirname
-});
+require("child_process").execSync(
+  "npm install @actions/core@1.2.4 @actions/github@2.2.0",
+  {
+    cwd: __dirname,
+  }
+);
 const fs = require("fs");
 const core = require("@actions/core");
 const github = require("@actions/github");
@@ -15,7 +18,7 @@ const main = async () => {
   const assets = core
     .getInput("assets")
     .split(" ")
-    .map(asset => asset.split(":"));
+    .map((asset) => asset.split(":"));
 
   if (recreate) {
     await deleteReleaseIfExists(code);
@@ -28,7 +31,7 @@ const main = async () => {
     name,
     body,
     draft: false,
-    prerelease: prerelease
+    prerelease: prerelease,
   });
 
   for (const [source, target, type] of assets) {
@@ -37,10 +40,10 @@ const main = async () => {
       url: release.data.upload_url,
       headers: {
         ["content-type"]: type,
-        ["content-length"]: data.length
+        ["content-length"]: data.length,
       },
       name: target,
-      file: data
+      file: data,
     });
   }
 };
@@ -50,7 +53,7 @@ async function deleteReleaseIfExists(code) {
   try {
     release = await api.repos.getReleaseByTag({
       ...github.context.repo,
-      tag: code
+      tag: code,
     });
   } catch (err) {
     console.log(err);
@@ -62,13 +65,13 @@ async function deleteReleaseIfExists(code) {
   const deleteRelease = async () =>
     api.repos.deleteRelease({
       ...github.context.repo,
-      release_id: release.data.id
+      release_id: release.data.id,
     });
 
   const deleteTagRef = async () =>
     api.git.deleteRef({
       ...github.context.repo,
-      ref: `tags/${code}`
+      ref: `tags/${code}`,
     });
 
   await retryOnFail(deleteRelease, 3);
@@ -90,12 +93,12 @@ async function retryOnFail(asyncFunction, maxTries = 3) {
 }
 
 async function delay(ms) {
-  await new Promise(resolve => {
+  await new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
 }
 
-main().catch(error => {
+main().catch((error) => {
   console.error(error);
   core.setFailed(error.message);
 });
